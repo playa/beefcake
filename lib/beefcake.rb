@@ -99,6 +99,7 @@ module Beefcake
 
             buf.append(:int32, val, fn)
           else
+            val.force_encoding('binary') if (fld.type == :string) && val.respond_to?(:force_encoding)
             buf.append(fld.type, val, fn)
           end
         end
@@ -166,6 +167,7 @@ module Beefcake
             (o[fld.name] ||= []) << val
           else
             val = buf.read(fld.type)
+            val.force_encoding('utf-8') if (fld.type == :string) && val.respond_to?(:force_encoding)
             o[fld.name] = val
           end
         end
